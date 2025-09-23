@@ -120,7 +120,8 @@
           e.preventDefault();
           const formData = Object.fromEntries(new FormData(this));
 
-          const url = "http://localhost:5678/webhook/cadastrarLead";
+          const url =
+            "https://render-n8n-bsk3.onrender.com/webhook/cadastrarLead";
           try {
             await fetch(url, {
               method: "POST",
