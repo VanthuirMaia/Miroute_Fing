@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MiRoute - Formulário</title>
+    <style>
+      /* Garante que padding/borda contam dentro da largura */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 40px;
+        background: #000;
+        color: #fff;
+      }
+      img {
+        max-width: 180px;
+        margin-bottom: 20px;
+      }
+      h2 {
+        color: #27ae60;
+        margin-bottom: 20px;
+      }
+      form {
+        text-align: left;
+        max-width: 480px;
+        margin: 0 auto;
+        background: #111;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin-top: 15px;
+        color: #ccc;
+      }
+      /* ⬇️ Estes seletores estavam aninhados por engano dentro do label */
+      input,
+      textarea,
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 5px;
+        border-radius: 6px;
+        border: 1px solid #444;
+        font-size: 16px;
+        background: #222;
+        color: #fff;
+      }
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border: 1px solid #27ae60;
+      }
+      button {
+        margin-top: 20px;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:hover {
+        background-color: #2ecc71;
+      }
+      #mensagem {
+        display: none;
+        margin-top: 30px;
+        font-size: 18px;
+        color: #27ae60;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Logo -->
+    <img src="logo.png" alt="Logo MiRoute" />
+
+    <h2>Enquanto alguém vem te atender, conta um pouco sobre você:</h2>
+
+    <form id="leadForm">
+      <label>Nome:</label>
+      <input type="text" name="nome" required />
+
+      <label>Telefone:</label>
+      <input type="text" name="telefone" />
+
+      <label>Email:</label>
+      <input type="email" name="email" required />
+
+      <label>Empresa:</label>
+      <input type="text" name="empresa" />
+
+      <label>Segmento:</label>
+      <input type="text" name="segmento" />
+
+      <label>Tem algum problema que podemos resolver com dados?</label>
+      <textarea name="problema" rows="4"></textarea>
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    <!-- Mensagem de confirmação -->
+    <div id="mensagem">
+      ✅ Um especialista está vindo te atender... Aguarde apenas alguns minutos!
+    </div>
+
+    <script>
+      document
+        .getElementById("leadForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const formData = Object.fromEntries(new FormData(this));
+
+          const url = "http://localhost:5678/webhook/cadastrarLead";
+          try {
+            await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData),
+            });
+
+            // Esconde o formulário e mostra a mensagem
+            this.style.display = "none";
+            document.getElementById("mensagem").style.display = "block";
+
+            // Redireciona após 5 segundos
+            setTimeout(() => {
+              window.location.href = "index.html";
+            }, 5000);
+          } catch (error) {
+            alert("Ocorreu um erro ao enviar os dados.");
+          }
+        });
+    </script>
+  </body>
+</html>
