@@ -56,15 +56,20 @@
 
     <script>
       async function chamarEquipe() {
-        // 🔗 Chama o webhook de notificação
-        const url =
-          "https://teste.activefunnel.com.br/webhook-test/miroute_form";
+        const url = "https://SEU-ENDERECO-DO-N8N/webhook/miroute_form";
         try {
-          await fetch(url, { method: "POST" });
+          await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              origem: "Botão principal da landing page MiRoute",
+            }),
+          });
         } catch (error) {
           console.error("Erro ao chamar webhook:", error);
         }
-        // 👉 Depois redireciona pro formulário
         window.location.href = "form.html";
       }
     </script>
